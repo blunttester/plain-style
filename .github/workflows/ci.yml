@@ -1,0 +1,72 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Run the test suite
+        run: uv run --frozen --python ${{ matrix.python }} pytest
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check this repository with its own skill
+        run: |
+          python3 .claude/skills/plain-style/scripts/check_docs.py \
+            README.md \
+            CONTRIBUTING.md \
+            .claude/skills/plain-style/SKILL.md \
+            .claude/skills/plain-style/references/*.md
+      - name: Check the dirty fixture still fails
+        run: |
+          if python3 .claude/skills/plain-style/scripts/check_docs.py \
+              tests/fixtures/dirty.md > /dev/null; then
+            echo "dirty.md passed, so the checker is broken"
+            exit 1
+          fi
+
+  install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Pack and install into a scratch project
+        shell: bash
+        run: |
+          npm pack
+          mkdir -p /tmp/scratch && cd /tmp/scratch
+          npm init -y > /dev/null
+          npm install "$GITHUB_WORKSPACE"/plain-style-*.tgz
+          npx plain-style install --here
+          test -f .claude/skills/plain-style/SKILL.md
+          test -f .claude/skills/plain-style/references/banned.md
+          test -f .claude/skills/plain-style/scripts/check_docs.py
+      - name: The installed copy must work
+        shell: bash
+        run: |
+          cd /tmp/scratch
+          python3 .claude/skills/plain-style/scripts/check_docs.py \
+            .claude/skills/plain-style/SKILL.md

@@ -1,0 +1,17 @@
+[project]
+name = "plain-style"
+version = "0.1.0"
+description = "Tooling for the plain-style agent skill. The skill itself needs no dependencies."
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+# The repository ships a skill directory, not an importable package.
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

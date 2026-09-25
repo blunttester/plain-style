@@ -1,0 +1,42 @@
+{
+  "name": "plain-style",
+  "version": "0.1.0",
+  "description": "An agent skill that writes documentation in plain, checkable English, with a zero-dependency linter.",
+  "type": "module",
+  "license": "MIT",
+  "author": "blunttester",
+  "homepage": "https://github.com/blunttester/plain-style#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blunttester/plain-style.git"
+  },
+  "bugs": {
+    "url": "https://github.com/blunttester/plain-style/issues"
+  },
+  "keywords": [
+    "documentation",
+    "style",
+    "linter",
+    "agent-skill",
+    "claude",
+    "copilot",
+    "plain-english",
+    "simplified-technical-english"
+  ],
+  "bin": {
+    "plain-style": "bin/install.mjs"
+  },
+  "files": [
+    "bin/",
+    ".claude/skills/plain-style/SKILL.md",
+    ".claude/skills/plain-style/references/",
+    ".claude/skills/plain-style/scripts/check_docs.py"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "uv run pytest",
+    "check": "python3 .claude/skills/plain-style/scripts/check_docs.py README.md CONTRIBUTING.md .claude/skills/plain-style/SKILL.md .claude/skills/plain-style/references/*.md"
+  }
+}
