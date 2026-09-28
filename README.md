@@ -16,17 +16,36 @@ that fails a build when the habit returns.
 - `references/` holds six files that load only when the situation needs them.
   They cover Orwell's six rules, Simplified Technical English, a Google style
   digest, a doc-type table, the banned word list, and worked examples.
-- `scripts/check_docs.py` is a Markdown prose linter. It needs Python 3.11 or
+- `scripts/check_docs.py` is a Markdown prose linter. It needs Python 3.9 or
   later, and the standard library only.
 
 ## Install
 
+The package is not on the npm registry. `npx` fetches the installer from
+GitHub instead, so you need Node.js 18 or later and `git`:
+
 ```bash
-npx plain-style install            # into this repository
-npx plain-style install --global   # for every project
-npx plain-style where              # show where it would land
-npx plain-style uninstall
+npx github:blunttester/plain-style install            # into this repository
+npx github:blunttester/plain-style install --global   # for every project
+npx github:blunttester/plain-style where              # show where it would land
+npx github:blunttester/plain-style uninstall
 ```
+
+After it copies the files, the installer looks for Python 3.9 or later. It
+tries `python3`, `python`, and `py -3`, in that order, and prints the command
+that works. If it finds no Python, it still installs the skill and prints a
+warning.
+
+Without Node.js, clone the repository and copy the skill directory:
+
+```bash
+git clone https://github.com/blunttester/plain-style.git
+mkdir -p your-repo/.claude/skills
+cp -r plain-style/.claude/skills/plain-style your-repo/.claude/skills/
+```
+
+Copy the whole directory. The checker reads `references/banned.md`, so
+`scripts/` alone reports every file as clean.
 
 Both Claude Code and GitHub Copilot read `.claude/skills/` in the repository,
 so a local install serves both. A global install writes two directories:
@@ -48,8 +67,10 @@ python3 .claude/skills/plain-style/scripts/check_docs.py docs/*.md
 python3 .claude/skills/plain-style/scripts/check_docs.py docs/*.md --json
 ```
 
-Exit codes: `0` when there are no errors, `1` when there are, `2` when a file
-cannot be read. Wire it into a pre-commit hook or a CI job on that basis.
+On Windows, if `python3` is missing, use `py` in its place.
+
+Exit codes: `0` when there are no errors, `1` when there are, `2` when the
+checker cannot read a file. Wire it into a pre-commit hook or a CI job on that basis.
 
 ### What it checks
 

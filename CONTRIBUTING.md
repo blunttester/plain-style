@@ -9,15 +9,16 @@ npm run check     # the skill checks its own documentation
 
 [uv](https://docs.astral.sh/uv/) reads `pyproject.toml`, installs pytest into a
 local environment, and runs it. You need no other setup. CI runs the same
-command on Python 3.11, 3.12, and 3.13, and installs the packed tarball on
+command on Python 3.9 to 3.13, and installs the packed tarball on
 Linux, macOS, and Windows. Both checks have to pass before a merge.
 
 ## Rules for this repository
 
-- **The linter stays dependency free.** `check_docs.py` imports the standard
-  library only, Python 3.11 or later, because it runs inside other people's
-  repositories. A test asserts the import list. The test suite may use pytest,
-  because tests never ship.
+- **The linter stays dependency free.** `check_docs.py` runs inside other
+  people's repositories. It imports the standard library only and supports
+  Python 3.9 or later. Apple ships Python 3.9 with macOS, so do not raise
+  the floor without a reason. A test asserts the import list. The test suite
+  may use pytest, because tests never ship.
 - **`references/banned.md` is the only word list.** The script parses that file
   at run time. Never add a second copy inside the code.
 - **The skill passes its own linter.** A test asserts this. If your change

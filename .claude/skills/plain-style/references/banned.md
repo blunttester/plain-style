@@ -1,15 +1,17 @@
-<!-- plain-style: allow-file=banned-word,long-sentence,glossary-synonym reason: this file lists the banned words, so every row would self-report -->
+<!-- plain-style: allow-file=banned-word,glossary-synonym reason: this file lists the banned words, so every row would self-report -->
 
 # Banned words and phrases
 
 `scripts/check_docs.py` reads the tables in this file. Keep the two-column
-format: the first cell is the word or pattern, the second is the replacement.
-`delete` in the second column means cut the word and change nothing else.
+format. The first cell is the word or pattern, and the second is the
+replacement. The word `delete` in the second column means cut the word and
+change nothing else.
 
-A term in the first cell may be a plain phrase or a regular expression wrapped
-in slashes, for example `/\bin order to\b/`. Use the regular expression form
-when a word is filler in one context and correct in another: `just` is filler in
-"just run the script" and correct in "just the header row".
+A term in the first cell may be a plain phrase. It may also be a regular
+expression wrapped in slashes, for example `/\bin order to\b/`. Use the regular
+expression form when a word is filler in one context and correct in another.
+The word `just` is filler in "just run the script" and correct in "just the
+header row".
 
 To add a word, add a row. To stop flagging a word, remove the row. There is no
 second list inside the script.
