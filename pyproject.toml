@@ -2,7 +2,7 @@
 name = "plain-style"
 version = "0.1.0"
 description = "Tooling for the plain-style agent skill. The skill itself needs no dependencies."
-requires-python = ">=3.11"
+requires-python = ">=3.9"
 dependencies = []
 
 [dependency-groups]

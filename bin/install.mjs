@@ -3,6 +3,7 @@
 
 import { cp, mkdir, rm, readdir } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -11,8 +12,10 @@ const NAME = "plain-style";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const SOURCE = path.join(ROOT, ".claude", "skills", NAME);
 const REQUIRED = ["SKILL.md", "references", "scripts"];
+const MIN_PYTHON = [3, 9];
+const SPEC = "github:blunttester/plain-style";
 
-const USAGE = `Usage: npx ${NAME} <install|uninstall|where> [options]
+const USAGE = `Usage: npx ${SPEC} <install|uninstall|where> [options]
 
 Options:
   --global          Install for every project, in your home directory
@@ -90,8 +93,48 @@ async function install(args) {
     });
     console.log(`installed: ${target}`);
   }
-  console.log(`\nThe checker needs Python 3.11 or later. Run it with:`);
-  console.log(`  python3 <skill>/scripts/check_docs.py FILE.md`);
+  reportPython();
+}
+
+// Returns the first command that runs a new enough Python, or the newest too-old one.
+function findPython() {
+  // On Windows, "python3" is often a Store stub that prints a message and fails.
+  const candidates = [["python3"], ["python"], ["py", "-3"]];
+  let tooOld = null;
+  for (const [cmd, ...pre] of candidates) {
+    const result = spawnSync(
+      cmd,
+      [...pre, "-c", "import sys; print('%d.%d' % sys.version_info[:2])"],
+      { encoding: "utf8" },
+    );
+    if (result.status !== 0 || !result.stdout) continue;
+    const version = result.stdout.trim().split(".").map(Number);
+    const found = { command: [cmd, ...pre].join(" "), version: version.join(".") };
+    const ok =
+      version[0] > MIN_PYTHON[0] ||
+      (version[0] === MIN_PYTHON[0] && version[1] >= MIN_PYTHON[1]);
+    if (ok) return { ...found, ok };
+    tooOld ??= found;
+  }
+  return tooOld ? { ...tooOld, ok: false } : null;
+}
+
+function reportPython() {
+  const need = MIN_PYTHON.join(".");
+  const python = findPython();
+  if (!python) {
+    console.log(`\nwarning: no Python found. The checker needs Python ${need} or later.`);
+    console.log(`The skill still installs, but the agent cannot run the checker.`);
+    return;
+  }
+  if (!python.ok) {
+    console.log(
+      `\nwarning: ${python.command} is Python ${python.version}. The checker needs ${need} or later.`,
+    );
+    return;
+  }
+  console.log(`\nFound Python ${python.version}. Run the checker with:`);
+  console.log(`  ${python.command} <skill>/scripts/check_docs.py FILE.md`);
 }
 
 async function uninstall(args) {

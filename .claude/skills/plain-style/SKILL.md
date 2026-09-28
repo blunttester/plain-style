@@ -29,6 +29,8 @@ Three sources, one layer each:
    python3 scripts/check_docs.py path/to/file.md
    ```
 
+   If `python3` is missing, try `python` or, on Windows, `py`.
+
    Fix what it reports. If the text is right and the rule is wrong, keep the
    text, add a waiver comment, and give the reason on one line:
 
