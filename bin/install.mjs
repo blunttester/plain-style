@@ -93,7 +93,7 @@ async function install(args) {
     });
     console.log(`installed: ${target}`);
   }
-  reportPython();
+  reportPython(targets(args)[0], args.scope);
 }
 
 // Returns the first command that runs a new enough Python. If none does, returns
@@ -120,7 +120,15 @@ function findPython() {
   return tooOld ? { ...tooOld, ok: false } : null;
 }
 
-function reportPython() {
+// Every target holds the same copy, so the command names one of them.
+function checkerCommand(python, target, scope) {
+  const script = path.join(target, "scripts", "check_docs.py");
+  // A global copy serves every project, so show the path that works from any of them.
+  const shown = scope === "global" ? script : path.relative(process.cwd(), script);
+  return `${python} ${shown.includes(" ") ? `"${shown}"` : shown} FILE.md`;
+}
+
+function reportPython(target, scope) {
   const need = MIN_PYTHON.join(".");
   const python = findPython();
   if (!python) {
@@ -135,7 +143,7 @@ function reportPython() {
     return;
   }
   console.log(`\nFound Python ${python.version}. Run the checker with:`);
-  console.log(`  ${python.command} <skill>/scripts/check_docs.py FILE.md`);
+  console.log(`  ${checkerCommand(python.command, target, scope)}`);
 }
 
 async function uninstall(args) {

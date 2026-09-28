@@ -32,9 +32,9 @@ npx github:blunttester/plain-style uninstall
 ```
 
 After it copies the files, the installer looks for Python 3.9 or later. It
-tries `python3`, `python`, and `py -3`, in that order, and prints the command
-that works. If it finds no Python, it still installs the skill and prints a
-warning.
+tries `python3`, `python`, and `py -3`, in that order. It then prints the
+full command to run the checker, with the path to the installed copy. If it
+finds no Python, it still installs the skill and prints a warning.
 
 Without Node.js, clone the repository and copy the skill directory:
 
