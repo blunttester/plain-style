@@ -1,4 +1,4 @@
-<!-- plain-style: allow-file=banned-word,long-sentence,passive-voice reason: shows the patterns it tells you to avoid -->
+<!-- plain-style: allow-file=banned-word,passive-voice reason: shows the patterns it tells you to avoid -->
 
 # Simplified Technical English, as applied here
 
@@ -38,6 +38,7 @@ deployment" or "deploy", not "do a deploy".
 Use these in the imperative. They are common, unambiguous, and have one sense
 each in this context.
 
+<!-- plain-style: allow=long-sentence reason: a word list, not a sentence -->
 add, apply, build, cancel, change, check, close, connect, copy, create, delete,
 deploy, disable, enable, enter, examine, export, fetch, find, install, keep,
 list, load, lock, log in, log out, move, open, push, read, release, remove,
@@ -74,6 +75,7 @@ Keep a procedure step to about 20 words. Keep other sentences to about 25. One
 idea per sentence. If a sentence contains "and" joining two independent
 clauses, it is usually two sentences.
 
+<!-- plain-style: allow=long-sentence reason: the bad example the section corrects -->
 > Before: If the deploy failed and the pods are still in CrashLoopBackOff, you
 > should roll back to the previous release, which you can find in the release
 > history, and then check the logs.

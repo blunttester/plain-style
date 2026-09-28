@@ -1,4 +1,4 @@
-<!-- plain-style: allow-file=banned-word,long-sentence,passive-voice reason: quotes the patterns it rules out -->
+<!-- plain-style: allow-file=banned-word,passive-voice reason: quotes the patterns it rules out -->
 
 # Google developer documentation style, digest
 
@@ -21,9 +21,9 @@ document. Open the full guide when you hit a case this file does not answer.
 ## Headings
 
 - Sentence case: "Configure the importer", not "Configure The Importer".
-- Task headings use the imperative or a gerund, consistently within a document:
-  either every heading is "Configure the importer" or every heading is
-  "Configuring the importer". Do not mix.
+- Task headings use the imperative or a gerund. Pick one per document: every
+  heading is "Configure the importer", or every heading is "Configuring the
+  importer". Do not mix.
 - One `#` per file, as the title. Do not skip levels.
 - The heading must describe the content under it well enough to be read alone
   in a table of contents.

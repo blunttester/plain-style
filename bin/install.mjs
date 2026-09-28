@@ -96,7 +96,8 @@ async function install(args) {
   reportPython();
 }
 
-// Returns the first command that runs a new enough Python, or the newest too-old one.
+// Returns the first command that runs a new enough Python. If none does, returns
+// the first older Python it found, or null.
 function findPython() {
   // On Windows, "python3" is often a Store stub that prints a message and fails.
   const candidates = [["python3"], ["python"], ["py", "-3"]];

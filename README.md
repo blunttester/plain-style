@@ -69,8 +69,8 @@ python3 .claude/skills/plain-style/scripts/check_docs.py docs/*.md --json
 
 On Windows, if `python3` is missing, use `py` in its place.
 
-Exit codes: `0` when there are no errors, `1` when there are, `2` when a file
-cannot be read. Wire it into a pre-commit hook or a CI job on that basis.
+Exit codes: `0` when there are no errors, `1` when there are, `2` when the
+checker cannot read a file. Wire it into a pre-commit hook or a CI job on that basis.
 
 ### What it checks
 

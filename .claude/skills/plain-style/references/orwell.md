@@ -1,4 +1,4 @@
-<!-- plain-style: allow-file=banned-word,long-sentence reason: quotes the original rules and shows bad examples -->
+<!-- plain-style: allow-file=banned-word reason: quotes the original rules and shows bad examples -->
 
 # Orwell's six rules, applied to documentation
 
@@ -36,9 +36,8 @@ writer reached for register instead of meaning.
 
 ## 3. If it is possible to cut a word out, always cut it out
 
-Apply this to whole paragraphs first. Two paragraphs are the largest cuts in
-most drafts: the one that says what the document will cover, and the one at the
-end that says what it covered.
+Apply this to whole paragraphs first. Most drafts have two paragraphs to cut.
+The first says what the document will cover. The last says what it covered.
 
 > Before: In this section, we will take a look at the various different options
 > that are available to you in order to configure the importer.
