@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -19,6 +19,18 @@ jobs:
           enable-cache: true
       - name: Run the test suite
         run: uv run --frozen --python ${{ matrix.python }} pytest
+
+  # The checker supports Python 3.9, but uv.lock starts at 3.10. pytest 9.0.3
+  # fixes CVE-2025-71176 and needs 3.10, so this job installs pytest 8 outside
+  # the lock. The runner is single-use, so the advisory's local attack does not
+  # apply. See CONTRIBUTING.md.
+  test-python-3-9:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - name: Run the test suite on Python 3.9
+        run: uv run --no-project --python 3.9 --with "pytest>=8,<9" pytest
 
   docs:
     runs-on: ubuntu-latest

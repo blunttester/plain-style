@@ -2,7 +2,9 @@
 name = "plain-style"
 version = "0.1.0"
 description = "Tooling for the plain-style agent skill. The skill itself needs no dependencies."
-requires-python = ">=3.9"
+# The dev environment only. The shipped checker supports Python 3.9; CI tests
+# that outside the lock, because no pytest with the CVE-2025-71176 fix runs on 3.9.
+requires-python = ">=3.10"
 dependencies = []
 
 [dependency-groups]

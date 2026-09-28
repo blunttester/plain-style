@@ -9,8 +9,18 @@ npm run check     # the skill checks its own documentation
 
 [uv](https://docs.astral.sh/uv/) reads `pyproject.toml`, installs pytest into a
 local environment, and runs it. You need no other setup. CI runs the same
-command on Python 3.9 to 3.13, and installs the packed tarball on
+command on Python 3.10 to 3.13, and installs the packed tarball on
 Linux, macOS, and Windows. Both checks have to pass before a merge.
+
+The dev environment needs Python 3.10, but the checker supports 3.9. The two
+floors differ on purpose. pytest 9.0.3 fixes CVE-2025-71176 and needs Python
+3.10, so `uv.lock` starts at 3.10. A separate CI job tests Python 3.9 with
+pytest 8, outside the lock. The advisory needs a second user on the same
+machine, and a CI runner has one user. To run that job locally:
+
+```bash
+uv run --no-project --python 3.9 --with "pytest>=8,<9" pytest
+```
 
 ## Rules for this repository
 
